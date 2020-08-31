@@ -29,6 +29,14 @@ class Table {
   }
 
   render() {
+    let indices
+
+    if (this.show.length) {
+      indices = this.show.map(name => this.columns.indexOf(name))
+    } else {
+      indices = [...this.columns.keys()]
+    }
+
     if (this.header) {
       const thead = this.thead || document.createElement('thead')
       this.thead = thead
@@ -44,5 +52,10 @@ class Table {
     if (this.data) {
       this.tbody.innerHTML = this.data.map(record => `<tr>${record.map(val => `<td>${val}</td>`).join('')}</tr>`).join('')
     }
+  }
+
+  countColumns() {
+    if (this.columns.length) return this.columns.length
+    return Math.max(...[...this.tbody.rows].map(row => row.cells.length))
   }
 }
