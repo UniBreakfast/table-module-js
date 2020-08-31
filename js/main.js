@@ -4,4 +4,6 @@ const data = [
   [2, 'Alex', 15],
   [3, 'Jeh', 50]
 ]
-const table = new Table('#tableContainer', { columns, data, header: true })
+
+const show = ['age', 'name']
+const table = new Table('#tableContainer', { columns, data, header: true, show })

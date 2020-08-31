@@ -12,24 +12,37 @@ class Table {
     this.table = table
     this.tbody = tbody
     this.columns = options.columns || []
+    this.data = options.data || []
+    this.show = options.show || this.columns
+    this.header = options.header || false
 
-    if (options.header) {
-      const thead = document.createElement('thead')
-      this.thead = thead
-      table.prepend(thead)
-      thead.innerHTML = `<tr>${this.columns.map(name => `<th>${name}</th>`).join('')}</tr>`
-    }
-
-    if (options.data) {
-      tbody.innerHTML = options.data.map(record => `<tr>${record.map(val => `<td>${val}</td>`).join('')}</tr>`).join('')
-    }
+    this.render()
   }
 
   addRecords(...records) {
-    records.forEach(record => {
+    this.data.push(...records)
+    this.tbody.append(...records.map(record => {
       const tr = document.createElement('tr')
       tr.innerHTML = record.map(val => `<td>${val}</td>`).join('')
-      this.tbody.append(tr)
-    })
+      return tr
+    }))
+  }
+
+  render() {
+    if (this.header) {
+      const thead = this.thead || document.createElement('thead')
+      this.thead = thead
+      this.table.prepend(thead)
+      thead.innerHTML = `<tr>${this.columns.map(name => `<th>${name}</th>`).join('')}</tr>`
+    } else {
+      if (this.thead) {
+        this.thead.remove()
+        delete this.thead
+      }
+    }
+
+    if (this.data) {
+      this.tbody.innerHTML = this.data.map(record => `<tr>${record.map(val => `<td>${val}</td>`).join('')}</tr>`).join('')
+    }
   }
 }
