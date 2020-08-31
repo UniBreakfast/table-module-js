@@ -33,15 +33,16 @@ class Table {
 
     if (this.show.length) {
       indices = this.show.map(name => this.columns.indexOf(name))
+      if (indices.includes(-1)) return console.error('Column not found')
     } else {
-      indices = [...this.columns.keys()]
+      indices = this.columns.length ? [...this.columns.keys()] : [...Array(this.countColumns()).keys()]
     }
 
     if (this.header) {
       const thead = this.thead || document.createElement('thead')
       this.thead = thead
       this.table.prepend(thead)
-      thead.innerHTML = `<tr>${this.columns.map(name => `<th>${name}</th>`).join('')}</tr>`
+      thead.innerHTML = `<tr>${indices.map(i => `<th>${this.columns[i]}</th>`).join('')}</tr>`
     } else {
       if (this.thead) {
         this.thead.remove()
@@ -50,12 +51,18 @@ class Table {
     }
 
     if (this.data) {
-      this.tbody.innerHTML = this.data.map(record => `<tr>${record.map(val => `<td>${val}</td>`).join('')}</tr>`).join('')
+      this.tbody.innerHTML = this.data.map(record => `<tr>${indices.map(i => `<td>${record[i]}</td>`).join('')}</tr>`).join('')
     }
   }
 
   countColumns() {
     if (this.columns.length) return this.columns.length
     return Math.max(...[...this.tbody.rows].map(row => row.cells.length))
+  }
+
+  hide(name) {
+    if (!this.show.length) this.show = this.columns
+    if (this.show.includes(name)) this.show = this.show.filter(col => col != name)
+    this.render()
   }
 }
