@@ -15,6 +15,8 @@ class Table {
     this.data = options.data || []
     this.show = options.show || this.columns
     this.header = options.header || false
+    this.footer = options.footer || false
+    this.footData = options.footData || []
 
     this.render()
   }
@@ -87,6 +89,20 @@ class Table {
       if (this.thead) {
         this.thead.remove()
         delete this.thead
+      }
+    }
+
+    if (this.footer) {
+      const tfoot = this.tfoot || document.createElement('tfoot')
+      this.tfoot = tfoot
+      this.table.append(tfoot)
+      
+      tfoot.innerHTML = `<tr>${indices.map(i =>
+        `<th>${(this.footData.length ? this.footData : this.columns)[i]}</th>`).join('')}</tr>`
+    } else {
+      if (this.tfoot) {
+        this.tfoot.remove()
+        delete this.tfoot
       }
     }
 
