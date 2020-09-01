@@ -20,6 +20,7 @@ class Table {
   }
 
   addRecords(...records) {
+    this.sortedBy = false
     this.data.push(...records)
     this.tbody.append(...records.map(record => {
       const tr = document.createElement('tr')
@@ -63,6 +64,21 @@ class Table {
   hide(name) {
     if (!this.show.length) this.show = this.columns
     if (this.show.includes(name)) this.show = this.show.filter(col => col != name)
+    this.render()
+  }
+
+  sort(column) {
+    const i = this.columns.indexOf(column)
+    const isNums = this.data.every(record => record[i] == +record[i])
+
+    if (this.sortedBy == column) {
+      this.data.reverse()
+    } else {
+      if (isNums) this.data.sort((a, b) => a[i] - b[i])
+      else this.data.sort((a, b) => a[i] > b[i] ? 1 : -1)
+    }
+    
+    this.sortedBy = column
     this.render()
   }
 }
