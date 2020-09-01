@@ -46,7 +46,14 @@ class Table {
       thead.innerHTML = `<tr>${indices.map(i => `<th>${this.columns[i]}</th>`).join('')}</tr>`
       this.thead.onclick = e => {
         const column = e.target.innerText
-        this.sort(column)
+        if (e.shiftKey) {
+          this.hide(column)
+        } else if (e.altKey) {
+          this.show = []
+          this.render()
+        } else {
+          this.sort(column)
+        }
       }
     } else {
       if (this.thead) {

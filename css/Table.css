@@ -1,5 +1,6 @@
 table.Table {
   border-collapse: collapse;
+  position: relative;
 }
 
 .Table tr > * {
@@ -11,4 +12,12 @@ table.Table {
 .Table thead tr th {
   background: #f1f1f1;
   cursor: pointer;
+}
+
+.Table thead:hover::before {
+  content: 'drag to move \A click to sort \A shift+click to hide \A alt+click to reset';
+  left: 110%;
+  color: #afafaf;
+  position: absolute;
+  white-space: pre;
 }
