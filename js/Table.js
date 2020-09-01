@@ -44,7 +44,8 @@ class Table {
       this.thead = thead
       this.table.prepend(thead)
       thead.innerHTML = `<tr>${indices.map(i => `<th>${this.columns[i]}</th>`).join('')}</tr>`
-      this.thead.onclick = e => {
+
+      thead.onclick = e => {
         const column = e.target.innerText
         if (e.shiftKey) {
           this.hide(column)
@@ -55,6 +56,33 @@ class Table {
           this.sort(column)
         }
       }
+
+      thead.onmousedown = e => {
+        const column = e.target.innerText
+        thead.classList.add('active')
+        e.target.classList.add('active')
+
+        const handleRelease = e => {
+          if (e.path.includes(thead) && e.target.innerText != column) {
+            const targetColumn = e.target.innerText
+            const columns = [...thead.querySelectorAll('th')].map(th => th.innerText)
+            const iTarget = columns.indexOf(targetColumn)
+            const i = columns.indexOf(column)
+
+            if (iTarget < i)
+            this.show = [...columns.slice(0, iTarget), column, ...columns.slice(iTarget, i), ...columns.slice(i + 1)]
+            else
+              this.show = [...columns.slice(0, i), ...columns.slice(i + 1, iTarget + 1), column, ...columns.slice(iTarget + 1)]
+              
+            this.render()
+          }
+
+          thead.classList.remove('active')
+          document.body.removeEventListener('mouseup', handleRelease)
+        }
+
+        document.body.addEventListener('mouseup', handleRelease)
+      } 
     } else {
       if (this.thead) {
         this.thead.remove()

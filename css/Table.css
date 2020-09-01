@@ -14,6 +14,18 @@ table.Table {
   cursor: pointer;
 }
 
+.Table thead tr th.active {
+  background: none;
+  border: none;
+  font-weight: normal;
+}
+
+.Table thead.active th:hover {
+  background: #ddd;
+  user-select: none;
+  font-weight: normal;
+}
+
 .Table thead:hover::before {
   content: 'drag to move \A click to sort \A shift+click to hide \A alt+click to reset';
   left: 110%;
