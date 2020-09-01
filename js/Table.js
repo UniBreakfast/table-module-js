@@ -44,6 +44,10 @@ class Table {
       this.thead = thead
       this.table.prepend(thead)
       thead.innerHTML = `<tr>${indices.map(i => `<th>${this.columns[i]}</th>`).join('')}</tr>`
+      this.thead.onclick = e => {
+        const column = e.target.innerText
+        this.sort(column)
+      }
     } else {
       if (this.thead) {
         this.thead.remove()
