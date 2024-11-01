@@ -65,7 +65,7 @@ class Table {
         e.target.classList.add('active')
 
         const handleRelease = e => {
-          if (e.path.includes(thead) && e.target.innerText != column) {
+          if (e.composedPath().includes(thead) && e.target.innerText != column) {
             const targetColumn = e.target.innerText
             const columns = [...thead.querySelectorAll('th')].map(th => th.innerText)
             const iTarget = columns.indexOf(targetColumn)
