@@ -1,4 +1,4 @@
-# table-module-js
+# [table-module-js](https://github.com/UniBreakfast/table-module-js)
 
 # a `Table` class to create a table element with handy functionality
 
